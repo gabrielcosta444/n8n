@@ -1,0 +1,271 @@
+{
+  "name": "Agendamento de consultas",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -360,
+        -160
+      ],
+      "id": "b98cd1e5-c6a4-41ba-a4fa-7c2b0acefd00",
+      "name": "When chat message received",
+      "webhookId": "81dab34f-159b-4430-a4c5-088db7d1e41a"
+    },
+    {
+      "parameters": {
+        "operation": "formatDate",
+        "date": "={{ $now }}",
+        "format": "custom",
+        "customFormat": "EEEE, MMMM dd yyyy 'at' hh:mm:ss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        -160
+      ],
+      "id": "b84d6da5-b01b-4996-a172-566d19e71a1b",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('When chat message received').item.json.chatInput }}",
+        "options": {
+          "systemMessage": "=Você é um assistente virtual de atendimento especializado em uma clínica odontológica. Sua função principal é tirar dúvidas dos pacientes sobre os serviços oferecidos pela clínica, fornecer informações claras e precisas e auxiliar no agendamento de consultas diretamente em uma agenda integrada (tool). Você deve ser cordial, profissional e rápido nas respostas.\n\nExemplo de Diálogo:\n\n1. Perguntas Frequentes\n\nUsuário: Quais serviços odontológicos vocês oferecem?\nAssistente: Olá! Oferecemos diversos serviços, incluindo limpeza dentária, clareamento, ortodontia (aparelhos), implantes, restaurações e tratamentos de canal. Se precisar de mais detalhes sobre algum deles, é só perguntar! 😊\n\nUsuário: Vocês atendem crianças?\nAssistente: Sim! Temos profissionais especializados em odontopediatria para cuidar da saúde bucal das crianças com muito carinho. Posso ajudar a agendar uma consulta?\n\n2. Agendamento de Consultas\n\nUsuário: Quero marcar uma consulta.\nAssistente: Claro! Qual seria a melhor data e horário para você? Temos disponibilidade para esta semana.\n\n3. Resolução de Dúvidas\n\nUsuário: Quanto custa o clareamento dental?\nAssistente: O clareamento dental custa a partir de R$ 500, dependendo do tipo de procedimento (consultório ou caseiro). Podemos agendar uma avaliação gratuita para verificar o melhor tratamento para você.\n\nUsuário: Preciso de documentação para a consulta?\nAssistente: Para a primeira consulta, pedimos apenas um documento de identificação com foto. Se tiver exames recentes, pode trazê-los também, mas não é obrigatório.\n\n\n\nHoje é: {{ $now }}\n\nPara novo agendamento:\n\nSolicite o nome, serviço e data/hora (Ex: 01/01/2024 18hs) do agendamento.\n\nAo receber todos os dados, verificar se há disponibilidade na agenda. Se sim, faça o agendamento com intervalo de 1 hora. Do contrário, informe que essa data/hora não está disponível.\n\nPara reagendamento:\n\nSolicite o nome e serviço do atual agendamento.\n\nSe o agendamento for localizado, solicitar a data/hora do reagendamento.\n\nAo receber a nova data e hora, verificar se há disponibilidade na agenda. Se sim, faça o reagendamento para a nova data e hora com intervalo de 1 hora. Do contrário, informe que essa data e hora não está disponível.\n\nPara exclusão de agendamento:\n\nSolicite o nome e serviço do atual agendamento.\n\nSe o agendamento for localizado, exclua-o. Do contrário, informe que o agendamento não foi localizado.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        60,
+        -160
+      ],
+      "id": "52498b07-572f-4944-b92c-0d447e26576c",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        40
+      ],
+      "id": "19c32029-dab2-48d9-a9f7-0978b2081a4e",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "irQEynKRCLnyaWqQ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        60
+      ],
+      "id": "78778ae1-5c89-4746-bbc9-5f0bfc366c0b",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "c332ec88a08ed2f20d05641c37b1ee02ba3be608da53f234241bd57081b2fe6c@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Agendamento IA"
+        },
+        "start": "={{ $fromAI(\"Start_Time\", \"Horario inicial do evento ex.:2024-10-08 00:00:00\") }}",
+        "end": "={{ $fromAI(\"End_Time\", \"Horario final do evento ex.:2024-10-08 00:10:00\") }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        220,
+        60
+      ],
+      "id": "f6f00d01-a2c1-405a-b6d2-76898eeb272c",
+      "name": "Agendar Consulta",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "pWStCazUScYfZ1wK",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "c332ec88a08ed2f20d05641c37b1ee02ba3be608da53f234241bd57081b2fe6c@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Agendamento IA"
+        },
+        "timeMin": "={{ $fromAI(\"Initial_DateTime\", \"Data e hora inicial da consulta ex.:2024-10-08 00:00:00\") }}",
+        "timeMax": "={{ $fromAI(\"Final_DateTime\", \"Data e hora final da consulta ex.:2024-10-08 00:00:00\") }}",
+        "options": {
+          "timeZone": {
+            "__rl": true,
+            "value": "America/Sao_Paulo",
+            "mode": "list",
+            "cachedResultName": "America/Sao_Paulo"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        360,
+        60
+      ],
+      "id": "d50fd728-32a1-4ffc-9fac-1f1f6fc1e518",
+      "name": "Buscar Consulta",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "pWStCazUScYfZ1wK",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "c332ec88a08ed2f20d05641c37b1ee02ba3be608da53f234241bd57081b2fe6c@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Agendamento IA"
+        },
+        "eventId": "={{ $fromAI(\"Event_ID\", \"ID do evento que deve ser excluido\") }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        500,
+        60
+      ],
+      "id": "3b447958-4215-4328-a31d-d2b8226f0de8",
+      "name": "Cancelar Consulta",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "pWStCazUScYfZ1wK",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Agendar Consulta": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Consulta": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cancelar Consulta": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1ecfea3b-c5d5-40af-b4b5-c165c0400d5b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "64dd923f88ba57d6f3fddd6c37ba2edcee794fbc612d1859e201b406453ff6a0"
+  },
+  "id": "GKZqsgjEufygdfI9",
+  "tags": []
+}

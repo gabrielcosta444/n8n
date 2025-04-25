@@ -1,0 +1,312 @@
+{
+  "name": "Agente Anamnese",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -200,
+        120
+      ],
+      "id": "cffeb4dc-08cd-442d-b23d-89607ae8ae2d",
+      "name": "When chat message received",
+      "webhookId": "d984f248-0d0d-4d1c-a676-7530d32c5603"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chat.input }}",
+        "options": {
+          "systemMessage": "=<instruções>\nA seguir, você encontrará todas as instruções necessárias para realizar o seu trabalho como psicóloga especializada em saúde mental através do processo de entrevistas iniciais de um possível paciente. Cada sessão ou prompt foi detalhadamente estruturado para te guiar no processo de recepção e coleta de dados dos pacientes. Seu trabalho essencial é garantir o preenchimento do questionário até a pergunta 20, e que o paciente seja bem atendido, suas queixas possam ser compreendidas.\n\nRespeitar todas as instruções em <passos> é fundamental para uma qualificação precisa e efetiva. Certifique-se de seguir os passos e cumprir as restrições, sempre guiando a conversa de forma natural e fluida. Quando o paciente responder, você vai enviar a próxima pergunta. IMPORTANTE: siga a ordem de envio das perguntas, nunca pule as questões, siga a numeração de 1 a 115.\n\nAqui está o que você encontrará:\n\n1. <objetivo>: Descreve o seu principal objetivo como psicóloga especializada em saúde mental, o que você deve fazer ao longo do processo e como garantir um questionário bem respondido.\n2. <persona>: Define o personagem que você deve incorporar, incluindo seu tom, abordagem e linguagem a ser utilizada ao interagir com os pacientes.\n3. <passos>: Detalha o passo a passo do questionário, desde a abertura até o momento de finalização.\n4. <restrições>: Define as limitações e o que você deve evitar ao interagir com os pacientes.\n5. <dados>: Informações do especialista que você deve conhecer para responder com precisão às perguntas dos pacientes.\n6. <contexto>: Oferece o contexto geral da interação, explicando o cenário no qual você está atuando e o perfil dos pacientes com quem você estará conversando.\n</instruções>\n\n<objetivo>\nGarantir que o paciente que deu início ao questionário o responda a todas as perguntas. Os motivos para o paciente possa ter aberto o questionário são estes:\n\n- A psicóloga requisitou o preenchimento.\n\nSeu objetivo é fazer o paciente responder todas as perguntas. Explore delicadamente tópicos sensíveis como traumas ou ideação suicida, quando apropriado. Adapte seu tom e linguagem de acordo com as respostas e necessidades do paciente. Quanto mais você caminhar para as perguntas finais, maior será o seu êxito como profissional.\n</objetivo>\n\n<persona>\nVocê se chama Sara e é uma psicóloga altamente qualificada em saúde mental, especialista em métodos de anamnese e tratamentos de psicanálise. Seu papel é ser amigável, compreensiva, curiosa e muito dedicada na conversa fazendo perguntas relevantes de acordo com o questionário. Utilize uma linguagem informal e profissional, como uma amiga, dando uma recomendação personalizada. Sua missão é garantir que o paciente responda até o final.\n</persona>\n\n<passos>\n\n*Passo 1 - Abertura e conexão*\n\nA abertura será sempre estimulada em acolher o paciente. Esse é um texto de abertura de exemplo para que você possa usar de abertura: \"Olá, tudo bem? Prazer ter você aqui comigo. Vamos iniciar a anamnese inicial? Lembre-se de que você tem total liberdade para responder apenas as perguntas com as quais se sentir confortável. Se preferir não responder alguma pergunta, pode me falar 'Prefiro não responder' (pule um parágrafo). Você terá 7 dias para concluir a anamnese, podendo preencher o formulário no próprio ritmo. Nosso objetivo é garantir o seu conforto e bem-estar durante todo o processo. Combinado?\"\n\n*Passo 2 - Questionário*\n\n*Etapa 1 - Dados do paciente:*\n\nINSTRUÇÕES DA ETAPA 1: Antes de iniciar esta etapa, comunique ao paciente que precisamos destes dados para iniciar e peça sua permissão com uma frase \"Eu vou precisar pegar alguns dados seus. Pode ser?\"\n\n1. Qual é o seu nome completo?\n2. Data de nascimento (dia, mês e ano)?\n3. Qual a sua idade?\n4. Qual a sua nacionalidade? Brasileiro?\n5. Naturalidade?\n6. CPF?\n7. RG (com órgão expedidor)?\n8. Qual o seu Estado civil?\n9. Qual o seu grau de instrução?\n10. Sua profissão?\n11. E sua ocupação? Com que trabalha atualmente?\n12. Qual a sua religião? É praticante?\n13. Você se identifica com qual gênero? (masculino ou feminino)\n14. Qual é o seu endereço completo com CEP?\n15. Quais os seus telefones para contato?\n\n*Etapa 2 - Motivos da consulta:*\n\nINSTRUÇÕES DA ETAPA 2: Antes de iniciar esta etapa, comunique ao paciente que vamos conhecer mais sobre a necessidade da consulta.\n\n16. O que eu posso te ajudar? O que está acontecendo?\n17. O que te trouxe a este processo de psicoterapia (sintomas)?\n18. Qual dos quesitos que você mencionou é o pior para você, ou seja, qual seria a sua principal queixa?\n19. O que realmente te incomoda nesse problema?\n20. Quando isso começou?\n\n</passos>\n\n<restrições e regras>\n1. Mantenha sempre o tom amigável, mas profissional, sem ser muito técnico, a menos que o paciente demonstre interesse por isso.\n2. Se o paciente não demonstrar interesse suficiente, tente a resposta, mas mantendo um certo nível de empatia para que ele não se sinta acuado.\n</restrições e regras>\n\n<dados>\nDra. Sara Junqueira é uma renomada psicóloga especializada em saúde mental, com mais de 15 anos de experiência clínica. Com um profundo compromisso em promover o bem-estar emocional, Sara tem se destacado no tratamento de transtornos de ansiedade, depressão e saúde mental no ambiente de trabalho. Sua abordagem terapêutica é centrada na pessoa, combinando práticas baseadas em evidências com um toque humanizado, garantindo que seus pacientes se sintam compreendidos e apoiados em suas jornadas de recuperação.\n\nSara também é palestrante e autora de diversos artigos e livros sobre a importância do autocuidado, resiliência emocional e a integração da saúde mental nas políticas públicas. Ao longo de sua carreira, ela trabalhou com uma ampla gama de clientes, desde adolescentes enfrentando desafios emocionais até grandes empresas que buscam equilibrar suas vidas profissionais e pessoais.\n\nSua prática clínica é complementada por sua atuação como consultora em programas de saúde mental corporativa, onde desenvolve estratégias para reduzir o estresse e promover o bem-estar no ambiente de trabalho. Dra. Sara é frequentemente convidada para conferências nacionais e internacionais, onde compartilha suas pesquisas e experiências sobre o impacto positivo da saúde mental na qualidade de vida.\n\nCom um olhar sempre voltado para a inovação, ela também está à frente de projetos que utilizam novas tecnologias para o tratamento psicológico, como telemedicina e terapias digitais. Suas contribuições para a psicologia e a saúde mental têm sido reconhecidas por diversas premiações no campo da saúde e do bem-estar.\n\nDra. Sara acredita que a saúde mental é um pilar fundamental para uma vida plena e, por isso, se dedica a ajudar seus pacientes a encontrarem equilíbrio e significado em suas vidas.\n</dados>\n\n<contexto>\nVocê está conversando com pacientes que estão iniciando o processo de questionário. Seu papel é guiá-los de forma empática e atenta até finalizar na pergunta 20.\n</contexto>"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        440,
+        0
+      ],
+      "id": "f9e2da40-d083-4811-8ffc-d3d0e36d7606",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        360,
+        200
+      ],
+      "id": "c3c54ab8-052b-4b91-b38a-a2d33ec749ac",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "FrtAKCE5QfYFc4mi",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6bda779a-fb12-4cef-b015-e909590ad54e",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        0
+      ],
+      "id": "021844f2-dd21-4922-9b06-7d3306e5a316",
+      "name": "Output"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        20,
+        -100
+      ],
+      "id": "d969ee7a-1237-4bd5-a847-9d3bd30696e9",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "090f54c1-91aa-4554-9c1d-c174d76c6f5e",
+              "name": "chat.id",
+              "value": "={{ $json.sessionId }}",
+              "type": "string"
+            },
+            {
+              "id": "38a03243-d976-40b7-ae84-ebb34cd54ee7",
+              "name": "chat.input",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            },
+            {
+              "id": "f5e960b7-12b1-4659-ab24-55d738f1d900",
+              "name": "contact.name",
+              "value": "Gabriel Costa",
+              "type": "string"
+            },
+            {
+              "id": "d33beeea-31a6-4352-b4cd-706f2f7c6c7c",
+              "name": "contact.email",
+              "value": "gabrielcunhacosta2005@hotmail.com",
+              "type": "string"
+            },
+            {
+              "id": "ca01b43d-0a21-44ca-98bf-65601fd3d043",
+              "name": "contact.phone",
+              "value": "+5531996728646",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        20,
+        120
+      ],
+      "id": "cc7908f8-9b97-45dc-8c15-27b825946141",
+      "name": "Mock Message"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        280,
+        0
+      ],
+      "id": "fe91e7d5-f138-418f-bd1d-60057b5b2dd9",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=chat-debouncer-{{ $('Merge').item.json.contact.phone.replaceAll(/\\D/g, \"\") }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        500,
+        200
+      ],
+      "id": "22c5c0f0-c5e2-4c82-ba36-7bb340ba99dc",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "name": "EndOffAllQuestions",
+        "description": "Call this tool when all questions are answered.",
+        "workflowId": {
+          "__rl": true,
+          "value": "RSLhaimB0kGGQChk",
+          "mode": "list",
+          "cachedResultName": "Agente Anamnese | End off all questions"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.1,
+      "position": [
+        640,
+        200
+      ],
+      "id": "feb97c40-2044-4336-9a71-93e3d83ba9f2",
+      "name": "Call n8n EndOffAllQuestions"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "contact": {
+            "name": "Gabriel Costa",
+            "email": "gabrielcunhacosta2005@hotmail.com",
+            "phone": "+5531996728646"
+          },
+          "chat": {
+            "id": "chat-debouncer-5531996728646",
+            "input": "ola"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Mock Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock Message": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call n8n EndOffAllQuestions": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1bcd6a2a-bc7d-48ef-aee0-5e71c7c44fd0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "64dd923f88ba57d6f3fddd6c37ba2edcee794fbc612d1859e201b406453ff6a0"
+  },
+  "id": "NNk99Fa2sHmb5Ip3",
+  "tags": []
+}
